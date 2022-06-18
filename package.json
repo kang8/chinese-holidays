@@ -1,0 +1,15 @@
+{
+  "name": "chinese-holidays",
+  "version": "1.0.0",
+  "description": "A lib provider api to check chinese holidays",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "kang8",
+  "license": "MIT",
+  "devDependencies": {
+    "vitest": "^0.15.1"
+  }
+}
