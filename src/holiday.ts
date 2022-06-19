@@ -49,4 +49,34 @@ export class Holiday {
       })
     })
   }
+
+  formatDate(date: Date): string {
+    return (
+      date.getFullYear() +
+      '-' +
+      date.getMonth().toString().padStart(2, '0') +
+      '-' +
+      date.getDate().toString().padStart(2, '0')
+    )
+  }
+
+  isPublicHoliday(date: Date): boolean {
+    const format_date = this.formatDate(date)
+
+    return this.data[date.getFullYear()][format_date]?.type === 'holiday'
+  }
+
+  isPublicWorkday(date: Date): boolean {
+    const format_date = this.formatDate(date)
+
+    return this.data[date.getFullYear()][format_date]?.type === 'workday'
+  }
+
+  isHoliday(date: Date): boolean {
+    return this.isPublicHoliday(date) || date.getDay() === 0 || date.getDate() === 6
+  }
+
+  isWorkday(date: Date): boolean {
+    return !this.isHoliday(date)
+  }
 }
