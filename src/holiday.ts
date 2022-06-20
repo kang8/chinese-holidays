@@ -60,6 +60,7 @@ export class Holiday {
     )
   }
 
+  // https://en.wikipedia.org/wiki/Public_holiday
   isPublicHoliday(date: Date): boolean {
     const format_date = this.formatDate(date)
 
