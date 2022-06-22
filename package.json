@@ -1,5 +1,5 @@
 {
-  "name": "@kang/chinese-holidays",
+  "name": "@kang8/chinese-holidays",
   "version": "0.0.1",
   "description": "A lib provider api to check chinese holidays",
   "main": "dst/src/index.js",
