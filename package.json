@@ -2,10 +2,11 @@
   "name": "@kang8/chinese-holidays",
   "version": "0.0.1",
   "description": "A lib provider api to check chinese holidays",
-  "main": "dst/src/index.js",
-  "type": "dst/src/index.d.ts",
+  "main": "dist/index.js",
+  "type": "dist/index.d.ts",
   "files": [
-    "/dist"
+    "/dist",
+    "/data"
   ],
   "scripts": {
     "test": "vitest",
