@@ -3,10 +3,15 @@ import path from 'path'
 
 const data_path: string = path.join(__dirname, '../data')
 
+type HolidayCnJsonSchema = {
+  year: number
+  days: Array<HolidayJson>
+}
+
 type HolidayJson = {
   name: string
-  range: Array<string>
-  type: string
+  date: string
+  isOffDay: boolean
 }
 
 type HolidayDate = {
@@ -29,24 +34,30 @@ export class Holiday {
   setup() {
     const data_files: Array<string> = fs.readdirSync(data_path)
 
-    data_files.forEach((file: string) => {
-      const year: string = file.slice(0, 4)
-      const file_buffer: Buffer = fs.readFileSync(path.join(__dirname, `../data/${file}`))
+    data_files.forEach((file_name: string) => {
+      const json_data_regex = new RegExp('20[012]\\d.json', 'gm')
 
-      this.parseYearJson(year, JSON.parse(file_buffer.toString()))
+      if (!json_data_regex.test(file_name)) {
+        return
+      }
+
+      const year: string = file_name.slice(0, 4)
+      const file_buffer: Buffer = fs.readFileSync(path.join(__dirname, `../data/${file_name}`))
+
+      this.parseYearJson(JSON.parse(file_buffer.toString()))
     })
   }
 
-  parseYearJson(year: string, year_json: Array<HolidayJson>) {
-    this.data[parseInt(year)] = new Map()
+  parseYearJson(holiday_cn_json_schema: HolidayCnJsonSchema) {
+    const year: number = holiday_cn_json_schema.year
 
-    year_json.forEach((holiday_json: HolidayJson) => {
-      holiday_json.range.forEach((date: string) => {
-        this.data[year][date] = {
+    this.data[year] = new Map()
+
+    holiday_cn_json_schema.days.forEach((holiday_json: HolidayJson) => {
+        this.data[year][holiday_json.date] = {
           name: holiday_json.name,
-          type: holiday_json.type,
+          type: holiday_json.isOffDay ? 'publicHoliday' : 'publicWorkday',
         }
-      })
     })
   }
 
@@ -64,13 +75,13 @@ export class Holiday {
   isPublicHoliday(date: Date): boolean {
     const format_date = this.formatDate(date)
 
-    return this.data[date.getFullYear()][format_date]?.type === 'holiday'
+    return this.data[date.getFullYear()][format_date]?.type === 'publicHoliday'
   }
 
   isPublicWorkday(date: Date): boolean {
     const format_date = this.formatDate(date)
 
-    return this.data[date.getFullYear()][format_date]?.type === 'workday'
+    return this.data[date.getFullYear()][format_date]?.type === 'publicWorkday'
   }
 
   isHoliday(date: Date): boolean {

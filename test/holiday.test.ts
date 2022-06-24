@@ -3,7 +3,7 @@ import { holiday } from '../src/index'
 
 describe('class', () => {
   it('class setup', () => {
-    expect(holiday.data[2022]['2022-01-01'].type).toBe('holiday')
+    expect(holiday.data[2022]['2022-01-01'].type).toBe('publicHoliday')
   })
 
   it('2022-06-19 is not workday', () => {
