@@ -1,6 +1,6 @@
 {
   "name": "@kang8/chinese-holidays",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A lib provider api to check chinese holidays",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -10,7 +10,8 @@
   ],
   "scripts": {
     "test": "vitest",
-    "build": "tsc"
+    "build": "tsc",
+    "publish": "tsc && vitest run && npm publish --access public"
   },
   "keywords": [],
   "author": "kang8",

@@ -14,8 +14,8 @@ describe('class', () => {
     expect(holiday.isHoliday(new Date('2022-06-19'))).toBe(true)
   })
 
-  it('2022-10-08 is holiday', () => {
-    expect(holiday.isHoliday(new Date('2022-10-08'))).toBe(true)
+  it('2022-10-08 is not holiday', () => {
+    expect(holiday.isHoliday(new Date('2022-10-08'))).toBe(false)
   })
 
   it('2022-06-19 is not public holiday', () => {
