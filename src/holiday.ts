@@ -54,10 +54,10 @@ export class Holiday {
     this.data[year] = new Map()
 
     holiday_cn_json_schema.days.forEach((holiday_json: HolidayJson) => {
-        this.data[year][holiday_json.date] = {
-          name: holiday_json.name,
-          type: holiday_json.isOffDay ? 'publicHoliday' : 'publicWorkday',
-        }
+      this.data[year][holiday_json.date] = {
+        name: holiday_json.name,
+        type: holiday_json.isOffDay ? 'publicHoliday' : 'publicWorkday',
+      }
     })
   }
 
@@ -65,7 +65,7 @@ export class Holiday {
     return (
       date.getFullYear() +
       '-' +
-      date.getMonth().toString().padStart(2, '0') +
+      (date.getMonth() + 1).toString().padStart(2, '0') +
       '-' +
       date.getDate().toString().padStart(2, '0')
     )
@@ -85,7 +85,7 @@ export class Holiday {
   }
 
   isHoliday(date: Date): boolean {
-    return this.isPublicHoliday(date) || date.getDay() === 0 || date.getDate() === 6
+    return !this.isPublicWorkday(date) && (this.isPublicHoliday(date) || date.getDay() === 0 || date.getDay() === 6)
   }
 
   isWorkday(date: Date): boolean {
