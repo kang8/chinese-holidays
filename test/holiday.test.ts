@@ -12,10 +12,12 @@ describe('class', () => {
 
   it('2022-06-19 is holiday', () => {
     expect(holiday.isHoliday(new Date('2022-06-19'))).toBe(true)
+    expect(holiday.isHoliday(new Date('2022-06-19'))).toBe(true)
   })
 
   it('2022-10-08 is not holiday', () => {
     expect(holiday.isHoliday(new Date('2022-10-08'))).toBe(false)
+    expect(holiday.publicHolidayName(new Date('2022-10-08'))).toBe(null)
   })
 
   it('2022-06-19 is not public holiday', () => {
@@ -24,5 +26,10 @@ describe('class', () => {
 
   it('2022-06-19 is not public workday', () => {
     expect(holiday.isPublicWorkday(new Date('2022-06-19'))).toBe(false)
+  })
+
+  it('2022-10-01 is public workday', () => {
+    expect(holiday.isPublicHoliday(new Date('2022-10-1'))).toBe(true)
+    expect(holiday.publicHolidayName(new Date('2022-10-1'))).toBe('国庆节')
   })
 })

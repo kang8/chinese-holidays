@@ -24,14 +24,14 @@ type HolidayDateInfo = {
 }
 
 export class Holiday {
-  data: Map<number, HolidayDate>
+  private readonly data: Map<number, HolidayDate>
 
   constructor() {
     this.data = new Map()
     this.setup()
   }
 
-  setup() {
+  private setup() {
     const data_files: Array<string> = fs.readdirSync(data_path)
 
     data_files.forEach((file_name: string) => {
@@ -48,7 +48,7 @@ export class Holiday {
     })
   }
 
-  parseYearJson(holiday_cn_json_schema: HolidayCnJsonSchema) {
+  private parseYearJson(holiday_cn_json_schema: HolidayCnJsonSchema) {
     const year: number = holiday_cn_json_schema.year
 
     this.data[year] = new Map()
@@ -61,7 +61,7 @@ export class Holiday {
     })
   }
 
-  formatDate(date: Date): string {
+  private formatDate(date: Date): string {
     return (
       date.getFullYear() +
       '-' +
@@ -90,5 +90,15 @@ export class Holiday {
 
   isWorkday(date: Date): boolean {
     return !this.isHoliday(date)
+  }
+
+  publicHolidayName(date: Date): string | null {
+    if (!this.isPublicHoliday(date)) {
+      return null;
+    }
+
+    const format_date = this.formatDate(date)
+
+    return this.data[date.getFullYear()][format_date]?.name ?? null;
   }
 }
