@@ -21,6 +21,8 @@ holiday.isHoliday(national_day) // true
 holiday.isWorkday(national_day) // false
 holiday.isPublicHoliday(national_day) // true
 holiday.isPublicWorkday(national_day) // false
+holiday.publicHolidayName(national_day) // 国庆节
+holiday.publicHolidayName(new Date('2022-09-30')) // null
 ```
 
 ## Development setup
