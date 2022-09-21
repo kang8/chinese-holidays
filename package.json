@@ -11,7 +11,7 @@
   "scripts": {
     "test": "vitest",
     "build": "tsc",
-    "publish": "tsc && vitest run && npm publish --access public"
+    "release": "tsc && vitest run && npm publish --access public"
   },
   "keywords": [],
   "author": "kang8",
