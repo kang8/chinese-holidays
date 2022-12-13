@@ -1,6 +1,6 @@
 {
   "name": "@kang8/chinese-holidays",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A lib provider api to check chinese holidays",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -17,7 +17,10 @@
   "author": "kang8",
   "license": "MIT",
   "devDependencies": {
-    "typescript": "^4.8.3",
-    "vitest": "^0.23.4"
+    "typescript": "^4.9.4",
+    "vitest": "^0.25.7"
+  },
+  "dependencies": {
+    "@types/node": "^18.11.14"
   }
 }

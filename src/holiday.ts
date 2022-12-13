@@ -99,6 +99,6 @@ export class Holiday {
 
     const format_date = this.formatDate(date)
 
-    return this.data[date.getFullYear()][format_date]?.name ?? null;
+    return this.data[date.getFullYear()][format_date]?.name;
   }
 }
