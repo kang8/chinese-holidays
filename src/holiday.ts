@@ -49,11 +49,13 @@ export class Holiday {
   }
 
   private parseYearJson(holiday_cn_json_schema: HolidayCnJsonSchema) {
-    const year: number = holiday_cn_json_schema.year
-
-    this.data[year] = new Map()
-
     holiday_cn_json_schema.days.forEach((holiday_json: HolidayJson) => {
+      const year = new Date(holiday_json.date).getFullYear()
+
+      if (this.data[year] === undefined) {
+        this.data[year] = new Map()
+      }
+
       this.data[year][holiday_json.date] = {
         name: holiday_json.name,
         type: holiday_json.isOffDay ? 'publicHoliday' : 'publicWorkday',
