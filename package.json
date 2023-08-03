@@ -6,7 +6,8 @@
   "types": "dist/index.d.ts",
   "files": [
     "/dist",
-    "/data/**/*.json"
+    "/data/**/*.json",
+    "src/**/*.ts"
   ],
   "scripts": {
     "test": "vitest",
