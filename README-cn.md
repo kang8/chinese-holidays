@@ -29,7 +29,7 @@ holiday.publicHolidayName(new Date('2022-09-30')) // null
 
 ```sh
 npm install
-npm build
+npm run build
 npm test
 ```
 
