@@ -14,9 +14,17 @@
     "build": "tsc",
     "release": "tsc && vitest run && npm publish --access public"
   },
-  "keywords": [],
+  "keywords": ["holiday", "chinese", "chinese-holidays"],
   "author": "kang8",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kang8/chinese-holidays.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kang8/chinese-holidays/issues"
+  },
+  "homepage": "https://github.com/kang8/chinese-holidays#readme",
   "devDependencies": {
     "typescript": "^5.2.2",
     "vite": "^4.5.0",
