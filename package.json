@@ -14,7 +14,11 @@
     "build": "tsc",
     "release": "tsc && vitest run && npm publish --access public"
   },
-  "keywords": ["holiday", "chinese", "chinese-holidays"],
+  "keywords": [
+    "holiday",
+    "chinese",
+    "chinese-holidays"
+  ],
   "author": "kang8",
   "license": "MIT",
   "repository": {
@@ -26,11 +30,11 @@
   },
   "homepage": "https://github.com/kang8/chinese-holidays#readme",
   "devDependencies": {
-    "typescript": "^5.2.2",
-    "vite": "^4.5.0",
+    "typescript": "^5.7.2",
+    "vite": "^4.5.5",
     "vitest": "^0.34.6"
   },
   "dependencies": {
-    "@types/node": "^20.8.10"
+    "@types/node": "^20.17.10"
   }
 }
