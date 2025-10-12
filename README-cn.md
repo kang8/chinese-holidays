@@ -73,7 +73,7 @@ holiday.isHoliday(new Date('2022-10-08')) // true - 周末（周六）
 判断给定日期是否为工作日。
 
 ```js
-holiday.isWorkday(new Date('2022-10-10')) // false - 国庆假期期间
+holiday.isWorkday(new Date('2022-10-08')) // false - 国庆假期期间
 holiday.isWorkday(new Date('2022-10-11')) // true - 正常工作日
 ```
 

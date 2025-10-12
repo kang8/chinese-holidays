@@ -73,7 +73,7 @@ holiday.isHoliday(new Date('2022-10-08')) // true - Weekend (Saturday)
 Check if the given date is a workday.
 
 ```js
-holiday.isWorkday(new Date('2022-10-10')) // false - National Day holiday period
+holiday.isWorkday(new Date('2022-10-07')) // false - National Day holiday period
 holiday.isWorkday(new Date('2022-10-11')) // true - Regular workday
 ```
 

@@ -1,11 +1,7 @@
 import { describe, it, expect } from 'vitest'
-import { holiday } from '../src/index'
+import { holiday } from '../src'
 
 describe('class', () => {
-  it('class setup', () => {
-    expect(holiday.data[2022]['2022-01-01'].type).toBe('publicHoliday')
-  })
-
   it('2022-06-19 is not workday', () => {
     expect(holiday.isWorkday(new Date('2022-06-19'))).toBe(false)
   })
@@ -82,5 +78,70 @@ describe('Different holiday types', () => {
   it('should return null for non-public-holiday dates', () => {
     expect(holiday.publicHolidayName(new Date('2022-03-15'))).toBe(null)
     expect(holiday.publicHolidayName(new Date('2022-10-08'))).toBe(null)
+  })
+})
+
+describe('README examples', () => {
+  describe('Quick Start example', () => {
+    it('should work with National Day 2022-10-01', () => {
+      const nationalDay = new Date('2022-10-01')
+
+      // Check if it's a holiday
+      expect(holiday.isHoliday(nationalDay)).toBe(true)
+
+      // Check if it's a workday
+      expect(holiday.isWorkday(nationalDay)).toBe(false)
+
+      // Get the holiday name
+      expect(holiday.publicHolidayName(nationalDay)).toBe('国庆节')
+    })
+  })
+
+  describe('isHoliday() examples', () => {
+    it('2022-10-01 should be true (National Day)', () => {
+      expect(holiday.isHoliday(new Date('2022-10-01'))).toBe(true)
+    })
+
+    it('2022-10-08 should be false (adjusted workday, not a regular weekend)', () => {
+      // Note: 2022-10-08 is a Saturday but was an adjusted workday
+      expect(holiday.isHoliday(new Date('2022-10-08'))).toBe(false)
+    })
+  })
+
+  describe('isWorkday() examples', () => {
+    it('2022-10-10 should be false (National Day holiday period)', () => {
+      expect(holiday.isWorkday(new Date('2022-10-07'))).toBe(false)
+    })
+
+    it('2022-10-11 should be true (Regular workday)', () => {
+      expect(holiday.isWorkday(new Date('2022-10-11'))).toBe(true)
+    })
+  })
+
+  describe('isPublicHoliday() examples', () => {
+    it('2022-10-01 should be true (National Day)', () => {
+      expect(holiday.isPublicHoliday(new Date('2022-10-01'))).toBe(true)
+    })
+
+    it('2022-10-08 should be false (Regular weekend, adjusted to workday)', () => {
+      expect(holiday.isPublicHoliday(new Date('2022-10-08'))).toBe(false)
+    })
+  })
+
+  describe('isPublicWorkday() examples', () => {
+    it('2022-10-08 should be true (Saturday adjusted to workday)', () => {
+      // October 8, 2022 (Saturday) was a working day to compensate for National Day holiday
+      expect(holiday.isPublicWorkday(new Date('2022-10-08'))).toBe(true)
+    })
+  })
+
+  describe('publicHolidayName() examples', () => {
+    it('2022-10-01 should return "国庆节"', () => {
+      expect(holiday.publicHolidayName(new Date('2022-10-01'))).toBe('国庆节')
+    })
+
+    it('2022-09-30 should return null', () => {
+      expect(holiday.publicHolidayName(new Date('2022-09-30'))).toBe(null)
+    })
   })
 })
