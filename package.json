@@ -1,25 +1,42 @@
 {
   "name": "@kang8/chinese-holidays",
   "version": "0.0.12",
-  "description": "A lib provider api to check chinese holidays",
+  "description": "A lightweight library to determine Chinese public holidays and workdays",
+  "type": "commonjs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
   "files": [
-    "/dist",
-    "/data/**/*.json",
-    "src/**/*.ts"
+    "dist",
+    "data/**/*.json"
   ],
   "scripts": {
     "test": "vitest",
     "build": "tsc",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "release": "tsc && vitest run && npm publish --access public"
+    "prepublishOnly": "pnpm format && pnpm build && pnpm test --run",
+    "release": "pnpm prepublishOnly && pnpm publish --access public"
   },
   "keywords": [
     "holiday",
     "chinese",
-    "chinese-holidays"
+    "chinese-holidays",
+    "workday",
+    "public-holiday",
+    "节假日",
+    "公休日",
+    "调休",
+    "工作日",
+    "china",
+    "calendar"
   ],
   "author": "kang8",
   "license": "MIT",
@@ -31,13 +48,12 @@
     "url": "https://github.com/kang8/chinese-holidays/issues"
   },
   "homepage": "https://github.com/kang8/chinese-holidays#readme",
+  "sideEffects": false,
   "devDependencies": {
     "prettier": "3.6.2",
+    "@types/node": "20.19.21",
     "typescript": "5.9.3",
     "vite": "4.5.14",
     "vitest": "0.34.6"
-  },
-  "dependencies": {
-    "@types/node": "20.19.21"
   }
 }
