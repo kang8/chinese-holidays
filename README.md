@@ -29,11 +29,13 @@ pnpm install @kang8/chinese-holidays
 ```
 
 Or using npm:
+
 ```sh
 npm install @kang8/chinese-holidays
 ```
 
 Or using yarn:
+
 ```sh
 yarn add @kang8/chinese-holidays
 ```

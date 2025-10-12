@@ -1,10 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended",
-    ":pinAllExceptPeerDependencies",
-    "group:allNonMajor"
-  ],
+  "extends": ["config:recommended", ":pinAllExceptPeerDependencies", "group:allNonMajor"],
   "timezone": "Asia/Shanghai",
   "rangeStrategy": "pin",
   "packageRules": [

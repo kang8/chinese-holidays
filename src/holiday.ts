@@ -87,7 +87,10 @@ export class Holiday {
   }
 
   isHoliday(date: Date): boolean {
-    return !this.isPublicWorkday(date) && (this.isPublicHoliday(date) || date.getDay() === 0 || date.getDay() === 6)
+    return (
+      !this.isPublicWorkday(date) &&
+      (this.isPublicHoliday(date) || date.getDay() === 0 || date.getDay() === 6)
+    )
   }
 
   isWorkday(date: Date): boolean {
@@ -96,11 +99,11 @@ export class Holiday {
 
   publicHolidayName(date: Date): string | null {
     if (!this.isPublicHoliday(date)) {
-      return null;
+      return null
     }
 
     const format_date = this.formatDate(date)
 
-    return this.data[date.getFullYear()][format_date]?.name;
+    return this.data[date.getFullYear()][format_date]?.name
   }
 }

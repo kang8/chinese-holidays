@@ -1,0 +1,17 @@
+# Dependencies
+node_modules
+
+# Build outputs
+dist
+*.tsbuildinfo
+
+# Lock files
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# OS files
+.DS_Store
+
+# data assets
+data/

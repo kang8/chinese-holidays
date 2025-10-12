@@ -5,6 +5,6 @@
 3. `npm install` to sync package.lock
 4. `npm run build && npm test` to test new data and packages
 5. `vim package.json` to dump version
-5. `git commit` via "Sync 202X holidays data and upgrade packages"
-6. `git tag` via 0.0.X
-7. `npm run release` to publish changes to npmjs.com
+6. `git commit` via "Sync 202X holidays data and upgrade packages"
+7. `git tag` via 0.0.X
+8. `npm run release` to publish changes to npmjs.com

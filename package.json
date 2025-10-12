@@ -12,6 +12,8 @@
   "scripts": {
     "test": "vitest",
     "build": "tsc",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "release": "tsc && vitest run && npm publish --access public"
   },
   "keywords": [
@@ -30,6 +32,7 @@
   },
   "homepage": "https://github.com/kang8/chinese-holidays#readme",
   "devDependencies": {
+    "prettier": "3.6.2",
     "typescript": "5.9.3",
     "vite": "4.5.14",
     "vitest": "0.34.6"
