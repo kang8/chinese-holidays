@@ -35,13 +35,12 @@ export class Holiday {
     const data_files: Array<string> = fs.readdirSync(data_path)
 
     data_files.forEach((file_name: string) => {
-      const json_data_regex = new RegExp('20[012]\\d.json', 'gm')
+      const json_data_regex = new RegExp('20\\d{2}\\.json$', 'gm')
 
       if (!json_data_regex.test(file_name)) {
         return
       }
 
-      const year: string = file_name.slice(0, 4)
       const file_buffer: Buffer = fs.readFileSync(path.join(__dirname, `../data/${file_name}`))
 
       this.parseYearJson(JSON.parse(file_buffer.toString()))
@@ -52,17 +51,28 @@ export class Holiday {
     holiday_cn_json_schema.days.forEach((holiday_json: HolidayJson) => {
       const year = new Date(holiday_json.date).getFullYear()
 
-      if (this.data[year] === undefined) {
-        this.data[year] = new Map()
+      if (!this.data.has(year)) {
+        this.data.set(year, { date: new Map() })
       }
 
-      this.data[year][holiday_json.date] = {
+      this.data.get(year)!.date.set(holiday_json.date, {
         name: holiday_json.name,
         type: holiday_json.isOffDay ? 'publicHoliday' : 'publicWorkday',
-      }
+      })
     })
   }
 
+  /**
+   * Formats a Date object to 'YYYY-MM-DD' string format
+   *
+   * @param date - The date object to format
+   * @returns The formatted date string in 'YYYY-MM-DD' format
+   * @example
+   * ```ts
+   * formatDate(new Date('2024-01-05')) // '2024-01-05'
+   * formatDate(new Date('2024-12-31')) // '2024-12-31'
+   * ```
+   */
   private formatDate(date: Date): string {
     return (
       date.getFullYear() +
@@ -76,14 +86,16 @@ export class Holiday {
   // https://en.wikipedia.org/wiki/Public_holiday
   isPublicHoliday(date: Date): boolean {
     const format_date = this.formatDate(date)
+    const yearData = this.data.get(date.getFullYear())
 
-    return this.data[date.getFullYear()][format_date]?.type === 'publicHoliday'
+    return yearData?.date.get(format_date)?.type === 'publicHoliday'
   }
 
   isPublicWorkday(date: Date): boolean {
     const format_date = this.formatDate(date)
+    const yearData = this.data.get(date.getFullYear())
 
-    return this.data[date.getFullYear()][format_date]?.type === 'publicWorkday'
+    return yearData?.date.get(format_date)?.type === 'publicWorkday'
   }
 
   isHoliday(date: Date): boolean {
@@ -103,7 +115,8 @@ export class Holiday {
     }
 
     const format_date = this.formatDate(date)
+    const yearData = this.data.get(date.getFullYear())
 
-    return this.data[date.getFullYear()][format_date]?.name
+    return yearData?.date.get(format_date)?.name ?? null
   }
 }
