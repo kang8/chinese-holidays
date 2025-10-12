@@ -1,0 +1,43 @@
+# Source files
+src/
+test/
+
+# Config files
+tsconfig.json
+.editorconfig
+.prettierrc*
+.eslintrc*
+renovate.json
+
+# CI/CD
+.github/
+
+# Development files
+*.log
+*.lock
+pnpm-lock.yaml
+
+# Git
+.git/
+.gitignore
+.gitmodules
+
+# Documentation
+release-node.md
+
+# Data processing scripts
+data/scripts/
+data/*.ics
+data/*.py
+data/Makefile
+data/dev-requirements.txt
+data/renovate.json
+data/README.md
+data/LICENSE
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
