@@ -5,14 +5,27 @@
 
     /* Modules */
     "module": "CommonJS" /* Specify what module code is generated. */,
+    "moduleResolution": "node" /* Use Node.js module resolution strategy. */,
 
     /* Emit */
     "declaration": true /* Generate .d.ts files from TypeScript and JavaScript files in your project. */,
     "sourceMap": true /* Create source map files for emitted JavaScript files. */,
     "declarationMap": true /* Generates a source map for .d.ts files which map back to the original .ts source file. */,
     "outDir": "./dist" /* Specify an output folder for all emitted files. */,
+
+    /* Interop Constraints */
     "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */,
-    "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */
+    "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
+
+    /* Type Checking */
+    "strict": true /* Enable all strict type-checking options. */,
+    "noUnusedLocals": true /* Report errors on unused local variables. */,
+    "noUnusedParameters": true /* Report errors on unused parameters. */,
+    "noImplicitReturns": true /* Report error when not all code paths in function return a value. */,
+    "noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statements. */,
+
+    /* Completeness */
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */
   },
   "include": ["src/**/*.ts"],
   "exclude": ["test/**/*.ts", "node_modules"]
