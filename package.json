@@ -53,9 +53,9 @@
   "sideEffects": false,
   "devDependencies": {
     "prettier": "3.6.2",
-    "@types/node": "22.18.11",
+    "@types/node": "22.18.12",
     "typescript": "5.9.3",
-    "vite": "7.1.10",
+    "vite": "7.1.12",
     "vitest": "4.0.3"
   }
 }
