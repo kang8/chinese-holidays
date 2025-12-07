@@ -1,6 +1,6 @@
 {
   "name": "@kang8/chinese-holidays",
-  "version": "0.0.12",
+  "version": "1.0.0",
   "description": "A lightweight library to determine Chinese public holidays and workdays",
   "type": "commonjs",
   "main": "dist/index.js",
