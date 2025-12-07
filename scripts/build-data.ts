@@ -18,7 +18,7 @@ function buildCompactData() {
   const dataDir = path.join(__dirname, '../data')
   const files = fs
     .readdirSync(dataDir)
-    .filter((f) => /20\d{2}\.json$/.test(f))
+    .filter(f => /20\d{2}\.json$/.test(f))
     .sort()
 
   // Collect all holiday names and data
@@ -30,7 +30,7 @@ function buildCompactData() {
     const json: SourceData = JSON.parse(content)
 
     // Organize data by year from date (not the file's year field)
-    json.days.forEach((day) => {
+    json.days.forEach(day => {
       const dateYear = parseInt(day.date.split('-')[0])
       if (!yearData[dateYear]) {
         yearData[dateYear] = []
@@ -48,7 +48,7 @@ function buildCompactData() {
   const compactData: Record<number, CompactDay[]> = {}
 
   for (const [year, days] of Object.entries(yearData)) {
-    compactData[+year] = days.map((day) => {
+    compactData[+year] = days.map(day => {
       const [, month, dayNum] = day.date.split('-')
       const monthDay = parseInt(month + dayNum)
       return [nameToIndex.get(day.name)!, monthDay, day.isOffDay ? 1 : 0] as CompactDay
