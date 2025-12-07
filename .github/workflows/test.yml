@@ -38,4 +38,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Generate holiday data
+        run: pnpm build:data
+
       - run: pnpm run test --run
