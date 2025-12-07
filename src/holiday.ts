@@ -1,18 +1,4 @@
-import fs from 'fs'
-import path from 'path'
-
-const data_path: string = path.join(__dirname, '../data')
-
-type HolidayCnJsonSchema = {
-  year: number
-  days: Array<HolidayJson>
-}
-
-type HolidayJson = {
-  name: string
-  date: string
-  isOffDay: boolean
-}
+import { HOLIDAY_NAMES, HOLIDAY_DATA, CompactDay } from './holiday-data'
 
 type HolidayDate = {
   date: Map<string, HolidayDateInfo>
@@ -32,34 +18,25 @@ export class Holiday {
   }
 
   private setup() {
-    const data_files: Array<string> = fs.readdirSync(data_path)
+    for (const [year, days] of Object.entries(HOLIDAY_DATA)) {
+      const yearNum = parseInt(year)
 
-    data_files.forEach((file_name: string) => {
-      const json_data_regex = new RegExp('20\\d{2}\\.json$', 'gm')
+      for (const [nameIndex, monthDay, isOffDay] of days as CompactDay[]) {
+        if (!this.data.has(yearNum)) {
+          this.data.set(yearNum, { date: new Map() })
+        }
 
-      if (!json_data_regex.test(file_name)) {
-        return
+        // Rebuild date string
+        const month = Math.floor(monthDay / 100)
+        const day = monthDay % 100
+        const dateStr = `${yearNum}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+
+        this.data.get(yearNum)!.date.set(dateStr, {
+          name: HOLIDAY_NAMES[nameIndex],
+          type: isOffDay === 1 ? 'publicHoliday' : 'publicWorkday',
+        })
       }
-
-      const file_buffer: Buffer = fs.readFileSync(path.join(__dirname, `../data/${file_name}`))
-
-      this.parseYearJson(JSON.parse(file_buffer.toString()))
-    })
-  }
-
-  private parseYearJson(holiday_cn_json_schema: HolidayCnJsonSchema) {
-    holiday_cn_json_schema.days.forEach((holiday_json: HolidayJson) => {
-      const year = new Date(holiday_json.date).getFullYear()
-
-      if (!this.data.has(year)) {
-        this.data.set(year, { date: new Map() })
-      }
-
-      this.data.get(year)!.date.set(holiday_json.date, {
-        name: holiday_json.name,
-        type: holiday_json.isOffDay ? 'publicHoliday' : 'publicWorkday',
-      })
-    })
+    }
   }
 
   /**

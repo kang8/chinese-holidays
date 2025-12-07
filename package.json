@@ -14,14 +14,12 @@
     }
   },
   "files": [
-    "dist",
-    "data/*.json",
-    "!data/renovate.json",
-    "!data/schema.json"
+    "dist"
   ],
   "scripts": {
     "test": "vitest",
-    "build": "tsc",
+    "build:data": "tsx scripts/build-data.ts",
+    "build": "pnpm build:data && tsc",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prepublishOnly": "pnpm format && pnpm build && pnpm test --run",
@@ -54,6 +52,7 @@
   "devDependencies": {
     "prettier": "3.7.4",
     "@types/node": "24.10.1",
+    "tsx": "4.21.0",
     "typescript": "5.9.3",
     "vite": "7.2.6",
     "vitest": "4.0.15"
