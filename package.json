@@ -51,10 +51,10 @@
   "sideEffects": false,
   "devDependencies": {
     "prettier": "3.7.4",
-    "@types/node": "24.10.1",
+    "@types/node": "24.10.3",
     "tsx": "4.21.0",
     "typescript": "5.9.3",
-    "vite": "7.2.6",
+    "vite": "7.2.7",
     "vitest": "4.0.15"
   }
 }
