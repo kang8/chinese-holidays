@@ -24,17 +24,17 @@ describe('class', () => {
     expect(holiday.isPublicWorkday(new Date('2022-06-19'))).toBe(false)
   })
 
-  it('2022-10-01 is public workday', () => {
+  it('2022-10-01 is public holiday', () => {
     expect(holiday.isPublicHoliday(new Date('2022-10-1'))).toBe(true)
     expect(holiday.publicHolidayName(new Date('2022-10-1'))).toBe('国庆节')
   })
 
-  it('2023-10-01 is public workday', () => {
+  it('2023-10-01 is public holiday', () => {
     expect(holiday.isPublicHoliday(new Date('2023-10-1'))).toBe(true)
     expect(holiday.publicHolidayName(new Date('2023-10-1'))).toBe('中秋节、国庆节')
   })
 
-  it('2023-12-31 is public holiday', () => {
+  it('2022-12-31 is public holiday', () => {
     expect(holiday.isPublicHoliday(new Date('2022-12-31'))).toBe(true)
   })
 })
