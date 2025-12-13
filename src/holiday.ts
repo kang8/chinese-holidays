@@ -4,9 +4,11 @@ type HolidayDate = {
   date: Map<string, HolidayDateInfo>
 }
 
+type DayType = 'publicHoliday' | 'publicWorkday'
+
 type HolidayDateInfo = {
   name: string
-  type: string
+  type: DayType
 }
 
 export class Holiday {
