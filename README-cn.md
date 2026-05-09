@@ -59,13 +59,15 @@ holiday.publicHolidayName(nationalDay) // '国庆节'
 
 ## 📖 API 文档
 
+日期会按中国标准时间（UTC+08:00）的日历日判断，因此 `new Date('YYYY-MM-DD')` 在不同运行时区下会得到一致结果。
+
 ### `isHoliday(date: Date): boolean`
 
 判断给定日期是否为假期（包括周末和法定节假日）。
 
 ```js
 holiday.isHoliday(new Date('2022-10-01')) // true - 国庆节
-holiday.isHoliday(new Date('2022-10-08')) // true - 周末（周六）
+holiday.isHoliday(new Date('2022-10-08')) // false - 调休工作日（周六）
 ```
 
 ### `isWorkday(date: Date): boolean`
@@ -73,7 +75,7 @@ holiday.isHoliday(new Date('2022-10-08')) // true - 周末（周六）
 判断给定日期是否为工作日。
 
 ```js
-holiday.isWorkday(new Date('2022-10-08')) // false - 国庆假期期间
+holiday.isWorkday(new Date('2022-10-08')) // true - 调休工作日
 holiday.isWorkday(new Date('2022-10-11')) // true - 正常工作日
 ```
 
@@ -83,7 +85,7 @@ holiday.isWorkday(new Date('2022-10-11')) // true - 正常工作日
 
 ```js
 holiday.isPublicHoliday(new Date('2022-10-01')) // true - 国庆节
-holiday.isPublicHoliday(new Date('2022-10-08')) // false - 普通周末
+holiday.isPublicHoliday(new Date('2022-10-08')) // false - 调休工作日
 ```
 
 ### `isPublicWorkday(date: Date): boolean`

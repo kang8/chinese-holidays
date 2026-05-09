@@ -1,9 +1,12 @@
 # Dependencies
 node_modules
+.pnpm-store
 
 # Build outputs
 dist
+package
 *.tsbuildinfo
+coverage
 
 # Lock files
 pnpm-lock.yaml
@@ -12,6 +15,8 @@ yarn.lock
 
 # OS files
 .DS_Store
+.claude
+.idea
 
 # data assets
 data/

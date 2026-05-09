@@ -59,13 +59,16 @@ holiday.publicHolidayName(nationalDay) // '国庆节'
 
 ## 📖 API Reference
 
+Dates are evaluated as China Standard Time (UTC+08:00) calendar dates, so
+`new Date('YYYY-MM-DD')` behaves consistently across runtime time zones.
+
 ### `isHoliday(date: Date): boolean`
 
 Check if the given date is a holiday (including weekends and public holidays).
 
 ```js
 holiday.isHoliday(new Date('2022-10-01')) // true - National Day
-holiday.isHoliday(new Date('2022-10-08')) // true - Weekend (Saturday)
+holiday.isHoliday(new Date('2022-10-08')) // false - Adjusted workday (Saturday)
 ```
 
 ### `isWorkday(date: Date): boolean`
@@ -83,7 +86,7 @@ Check if the given date is an official public holiday (excluding regular weekend
 
 ```js
 holiday.isPublicHoliday(new Date('2022-10-01')) // true - National Day
-holiday.isPublicHoliday(new Date('2022-10-08')) // false - Regular weekend
+holiday.isPublicHoliday(new Date('2022-10-08')) // false - Adjusted workday
 ```
 
 ### `isPublicWorkday(date: Date): boolean`

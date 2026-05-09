@@ -1,8 +1,6 @@
 import { HOLIDAY_NAMES, HOLIDAY_DATA, CompactDay } from './holiday-data'
 
-type HolidayDate = {
-  date: Map<string, HolidayDateInfo>
-}
+export type DateInput = Date | string
 
 type DayType = 'publicHoliday' | 'publicWorkday'
 
@@ -11,29 +9,23 @@ type HolidayDateInfo = {
   type: DayType
 }
 
+type ChinaDateParts = {
+  year: number
+  month: number
+  day: number
+  dayOfWeek: number
+}
+
+const CHINA_TIME_OFFSET_MS = 8 * 60 * 60 * 1000
+
 export class Holiday {
-  private readonly data: Map<number, HolidayDate>
+  private readonly lookup = new Map<number, HolidayDateInfo>()
 
   constructor() {
-    this.data = new Map()
-    this.setup()
-  }
-
-  private setup() {
     for (const [year, days] of Object.entries(HOLIDAY_DATA)) {
-      const yearNum = parseInt(year)
-
+      const yearNum = Number(year)
       for (const [nameIndex, monthDay, isOffDay] of days as CompactDay[]) {
-        if (!this.data.has(yearNum)) {
-          this.data.set(yearNum, { date: new Map() })
-        }
-
-        // Rebuild date string
-        const month = Math.floor(monthDay / 100)
-        const day = monthDay % 100
-        const dateStr = `${yearNum}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`
-
-        this.data.get(yearNum)!.date.set(dateStr, {
+        this.lookup.set(yearNum * 10000 + monthDay, {
           name: HOLIDAY_NAMES[nameIndex],
           type: isOffDay === 1 ? 'publicHoliday' : 'publicWorkday',
         })
@@ -42,60 +34,93 @@ export class Holiday {
   }
 
   /**
-   * Formats a Date object to 'YYYY-MM-DD' string format
+   * Returns true when `input` is a Chinese statutory public holiday
+   * (e.g. National Day, Spring Festival).
    *
-   * @param date - The date object to format
-   * @returns The formatted date string in 'YYYY-MM-DD' format
    * @example
-   * ```ts
-   * formatDate(new Date('2024-01-05')) // '2024-01-05'
-   * formatDate(new Date('2024-12-31')) // '2024-12-31'
-   * ```
+   * holiday.isPublicHoliday('2025-10-01') // true
+   * holiday.isPublicHoliday(new Date(2025, 9, 1)) // true
    */
-  private formatDate(date: Date): string {
+  isPublicHoliday(input: DateInput): boolean {
+    return this.getInfo(this.toParts(input))?.type === 'publicHoliday'
+  }
+
+  /**
+   * Returns true when `input` is an adjusted working day — a weekend day
+   * officially designated as a workday to compensate for an extended break.
+   *
+   * @example
+   * holiday.isPublicWorkday('2025-01-26') // true (Sunday made workday for Spring Festival)
+   */
+  isPublicWorkday(input: DateInput): boolean {
+    return this.getInfo(this.toParts(input))?.type === 'publicWorkday'
+  }
+
+  /**
+   * Returns the Chinese name of the public holiday on `input`, or `null` if
+   * `input` is not a public holiday (adjusted workdays return `null`).
+   *
+   * @example
+   * holiday.publicHolidayName('2025-10-01') // '国庆节'
+   * holiday.publicHolidayName('2025-01-26') // null
+   */
+  publicHolidayName(input: DateInput): string | null {
+    const info = this.getInfo(this.toParts(input))
+    return info?.type === 'publicHoliday' ? info.name : null
+  }
+
+  /**
+   * Returns true when `input` is a non-working day: a public holiday, or a
+   * weekend that has not been converted into an adjusted workday.
+   *
+   * @example
+   * holiday.isHoliday('2025-10-01') // true (National Day)
+   * holiday.isHoliday('2025-01-26') // false (Sunday but adjusted to workday)
+   */
+  isHoliday(input: DateInput): boolean {
+    const parts = this.toParts(input)
+    const info = this.getInfo(parts)
+
     return (
-      date.getFullYear() +
-      '-' +
-      (date.getMonth() + 1).toString().padStart(2, '0') +
-      '-' +
-      date.getDate().toString().padStart(2, '0')
+      info?.type !== 'publicWorkday' &&
+      (info?.type === 'publicHoliday' || parts.dayOfWeek === 0 || parts.dayOfWeek === 6)
     )
   }
 
-  // https://en.wikipedia.org/wiki/Public_holiday
-  isPublicHoliday(date: Date): boolean {
-    const format_date = this.formatDate(date)
-    const yearData = this.data.get(date.getFullYear())
-
-    return yearData?.date.get(format_date)?.type === 'publicHoliday'
+  /**
+   * Returns true when `input` is a working day. Inverse of {@link isHoliday}.
+   *
+   * @example
+   * holiday.isWorkday('2025-10-08') // true
+   */
+  isWorkday(input: DateInput): boolean {
+    return !this.isHoliday(input)
   }
 
-  isPublicWorkday(date: Date): boolean {
-    const format_date = this.formatDate(date)
-    const yearData = this.data.get(date.getFullYear())
-
-    return yearData?.date.get(format_date)?.type === 'publicWorkday'
-  }
-
-  isHoliday(date: Date): boolean {
-    return (
-      !this.isPublicWorkday(date) &&
-      (this.isPublicHoliday(date) || date.getDay() === 0 || date.getDay() === 6)
-    )
-  }
-
-  isWorkday(date: Date): boolean {
-    return !this.isHoliday(date)
-  }
-
-  publicHolidayName(date: Date): string | null {
-    if (!this.isPublicHoliday(date)) {
-      return null
+  /**
+   * Normalizes `input` to a calendar date in China time (UTC+8).
+   * - String inputs are parsed as `'YYYY-MM-DD'` calendar dates, free of any
+   *   platform timezone effects.
+   * - Date inputs are interpreted as moments in time and converted to the
+   *   corresponding China date, so timezone-naive constructs like
+   *   `new Date('2025-01-01')` (UTC midnight) resolve to Jan 1 in China.
+   */
+  private toParts(input: DateInput): ChinaDateParts {
+    if (typeof input === 'string') {
+      const [year, month, day] = input.slice(0, 10).split('-').map(Number)
+      const dayOfWeek = new Date(Date.UTC(year, month - 1, day)).getUTCDay()
+      return { year, month, day, dayOfWeek }
     }
+    const chinaDate = new Date(input.getTime() + CHINA_TIME_OFFSET_MS)
+    return {
+      year: chinaDate.getUTCFullYear(),
+      month: chinaDate.getUTCMonth() + 1,
+      day: chinaDate.getUTCDate(),
+      dayOfWeek: chinaDate.getUTCDay(),
+    }
+  }
 
-    const format_date = this.formatDate(date)
-    const yearData = this.data.get(date.getFullYear())
-
-    return yearData?.date.get(format_date)?.name ?? null
+  private getInfo(parts: ChinaDateParts): HolidayDateInfo | undefined {
+    return this.lookup.get(parts.year * 10000 + parts.month * 100 + parts.day)
   }
 }

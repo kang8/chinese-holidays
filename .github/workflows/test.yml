@@ -6,77 +6,49 @@ on:
 name: test
 
 jobs:
-  Vitest:
-    name: Vitest
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          submodules: true
-
-      - name: Install Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: 24.15.0
-
-      - uses: pnpm/action-setup@v6.0.5
-        name: Install pnpm
-        with:
-          version: 10.33.4
-          run_install: false
-
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
-      - uses: actions/cache@v5
-        name: Setup pnpm cache
-        with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Generate holiday data
-        run: pnpm build:data
-
-      - run: pnpm run test --run
-
   Format:
     name: Format Check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+      - uses: ./.github/actions/setup
+      - run: pnpm format:check
 
-      - name: Install Node.js
-        uses: actions/setup-node@v6
+  Build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
         with:
-          node-version: 24.15.0
+          submodules: true
+      - uses: ./.github/actions/setup
+      - run: pnpm build
 
-      - uses: pnpm/action-setup@v6.0.5
-        name: Install pnpm
+  Vitest:
+    name: Vitest (${{ matrix.timezone }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        timezone: [UTC, Asia/Shanghai, America/New_York]
+    env:
+      TZ: ${{ matrix.timezone }}
+    steps:
+      - uses: actions/checkout@v6
         with:
-          version: 10.33.4
-          run_install: false
+          submodules: true
 
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      - uses: ./.github/actions/setup
 
-      - uses: actions/cache@v5
-        name: Setup pnpm cache
+      - name: Generate holiday data
+        run: pnpm build:data
+
+      - name: Run tests with coverage
+        run: pnpm run test --run --coverage
+
+      - name: Upload coverage
+        if: matrix.timezone == 'UTC'
+        uses: actions/upload-artifact@v4
         with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - run: pnpm run format:check
+          name: coverage
+          path: coverage/

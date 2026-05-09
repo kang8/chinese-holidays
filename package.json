@@ -1,25 +1,30 @@
 {
   "name": "@kang8/chinese-holidays",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "A lightweight library to determine Chinese public holidays and workdays",
   "type": "commonjs",
+  "packageManager": "pnpm@10.33.4",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "require": "./dist/index.js",
-      "import": "./dist/index.js",
       "default": "./dist/index.js"
-    }
+    },
+    "./package.json": "./package.json"
   },
   "files": [
-    "dist"
+    "dist",
+    "CHANGELOG.md"
   ],
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "test": "vitest",
     "build:data": "tsx scripts/build-data.ts",
-    "build": "pnpm build:data && tsc",
+    "clean": "rm -rf dist",
+    "build": "pnpm clean && pnpm build:data && tsc",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prepublishOnly": "pnpm format && pnpm build && pnpm test --run",
@@ -50,11 +55,11 @@
   "homepage": "https://github.com/kang8/chinese-holidays#readme",
   "sideEffects": false,
   "devDependencies": {
-    "prettier": "3.8.3",
     "@types/node": "24.12.3",
+    "@vitest/coverage-v8": "4.1.5",
+    "prettier": "3.8.3",
     "tsx": "4.21.0",
     "typescript": "6.0.3",
-    "vite": "8.0.11",
     "vitest": "4.1.5"
   }
 }
