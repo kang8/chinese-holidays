@@ -17,12 +17,12 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v6.4.0
         with:
-          node-version: 24.17.0
+          node-version: 24.18.0
 
       - uses: pnpm/action-setup@v6.0.9
         name: Install pnpm
         with:
-          version: 11.8.0
+          version: 11.9.0
           run_install: false
 
       - name: Get pnpm store directory
@@ -30,7 +30,7 @@ jobs:
         run: |
           echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
-      - uses: actions/cache@v5.0.5
+      - uses: actions/cache@v5.1.0
         name: Setup pnpm cache
         with:
           path: ${{ env.STORE_PATH }}
@@ -55,12 +55,12 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v6.4.0
         with:
-          node-version: 24.17.0
+          node-version: 24.18.0
 
       - uses: pnpm/action-setup@v6.0.9
         name: Install pnpm
         with:
-          version: 11.8.0
+          version: 11.9.0
           run_install: false
 
       - name: Get pnpm store directory
@@ -68,7 +68,7 @@ jobs:
         run: |
           echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
-      - uses: actions/cache@v5.0.5
+      - uses: actions/cache@v5.1.0
         name: Setup pnpm cache
         with:
           path: ${{ env.STORE_PATH }}
