@@ -17,12 +17,12 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v7.0.0
         with:
-          node-version: 24.20.0
+          node-version: 24.21.0
 
-      - uses: pnpm/action-setup@v6.0.10
+      - uses: pnpm/action-setup@v6.1.0
         name: Install pnpm
         with:
-          version: 12.3.4
+          version: 12.4.1
           run_install: false
 
       - name: Get pnpm store directory
@@ -55,12 +55,12 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v7.0.0
         with:
-          node-version: 24.20.0
+          node-version: 24.21.0
 
-      - uses: pnpm/action-setup@v6.0.10
+      - uses: pnpm/action-setup@v6.1.0
         name: Install pnpm
         with:
-          version: 12.3.4
+          version: 12.4.1
           run_install: false
 
       - name: Get pnpm store directory
